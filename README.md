@@ -46,7 +46,6 @@ services:
     image: ghcr.io/cumpsd/chainflip-lp:v8.0.1
     pull_policy: always
     restart: unless-stopped
-    user: root
     working_dir: "/app"
     environment:
       - DOTNET_PRINT_TELEMETRY_MESSAGE=false
