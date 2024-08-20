@@ -23,7 +23,13 @@ The orders are limited to the USDT/USDC/arbUSDC stablecoin pools since they do n
 
 ## Usage
 
-Start by downloading the `docker-compose.yml` file, or copying it:
+Start by downloading the `docker-compose.yml` file, or creating it yourself:
+
+```bash
+nano docker-compose.yml
+```
+
+Paste and adjust the below into the empty file.
 
 ```yml
 services:
