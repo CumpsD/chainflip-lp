@@ -25,6 +25,8 @@ The orders are limited to the USDT/USDC/arbUSDC stablecoin pools since they do n
 
 Start by downloading the `docker-compose.yml` file, or copying it:
 
+Linux users can also run `wget https://raw.githubusercontent.com/CumpsD/chainflip-lp/main/docker-compose.yml`
+
 ```yml
 services:
   lp:
@@ -43,7 +45,7 @@ services:
       - --state_chain.ws_endpoint=wss://mainnet-rpc.chainflip.io:443
 
   cf-lp:
-    image: ghcr.io/cumpsd/chainflip-lp:v8.0.1
+    image: ghcr.io/cumpsd/chainflip-lp:v8.0.4
     pull_policy: always
     restart: unless-stopped
     working_dir: "/app"
@@ -83,7 +85,7 @@ services:
 We start by generating a new signing key for the Chainflip LP API. This will be your LP account. Run the following command and save the **Validator Account ID** and **Seed Phrase**!
 
 ```bash
-sudo docker run -v .:/etc/chainflip --entrypoint=/usr/local/bin/chainflip-cli chainfliplabs/chainflip-cli:1.4 generate-keys --path .
+docker run -v .:/etc/chainflip --entrypoint=/usr/local/bin/chainflip-cli chainfliplabs/chainflip-cli:1.4 generate-keys --path .
 ```
 
 #### Funding
@@ -105,6 +107,12 @@ The following steps need to be followed to fund your LP account with FLIP, which
 Either:
 * Add your `signing_key_file` next to the `docker-compose.yml` file if you have an existing one.
 * Create a `signing_key_file` containing the private key of your Chainflip LP account and make sure it has **no trailing newline**!
+
+If you do not have your private key anymore, but you have your seed phrase, run the following:
+
+```bash
+docker run -v .:/etc/chainflip --entrypoint=/usr/local/bin/chainflip-cli chainfliplabs/chainflip-cli:1.4 generate-keys --path . --seed-phrase "12 words here"
+```
 
 Proceed to the [All Users steps](#all-users) below once you have this.
 
