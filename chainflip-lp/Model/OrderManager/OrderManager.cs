@@ -78,6 +78,10 @@ namespace ChainflipLp.Model
                         },
                         ct);
 
+                _logger.LogInformation(
+                    "Telegram message {MessageId} sent.",
+                    message.MessageId);
+                
                 await telegramClient
                     .SetMessageReactionAsync(
                         new SetMessageReactionRequest

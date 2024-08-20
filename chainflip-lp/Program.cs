@@ -97,6 +97,14 @@
             var total = pools.Sum(pool => pool.Slice.Value);
             if (Math.Abs(total - 100) > 1)
                 throw new Exception("Total percentage slice of all pools should be 100.");
+
+            var usdcPool = pools
+                .Any(x => 
+                    x.Asset.Equals("USDC", StringComparison.InvariantCultureIgnoreCase) &&
+                    x.Chain.Equals("Ethereum", StringComparison.InvariantCultureIgnoreCase));
+            
+            if (usdcPool)
+                throw new Exception("Cannot configure a USDC/Ethereum pool.");
         }
 
         private static AutofacServiceProvider ConfigureServices(
