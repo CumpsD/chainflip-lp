@@ -23,6 +23,14 @@ The orders are limited to the USDT/USDC/arbUSDC stablecoin pools since they do n
 
 ## Usage
 
+### Prerequisites
+
+* A recent Docker version: [docs.docker.com/engine/install/ubuntu/](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
+* The `docker-compose-plugin` installed. This should be present if you followed the Docker installation instructions.
+* If you want to run as root, make sure to add `-u root` to every `docker run` command below.
+
+### Bot Configuration
+
 Start by downloading the `docker-compose.yml` file, or copying it:
 
 Linux users can also run `wget https://raw.githubusercontent.com/CumpsD/chainflip-lp/main/docker-compose.yml`
