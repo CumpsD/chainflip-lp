@@ -137,7 +137,7 @@ Proceed to the [All Users steps](#all-users) below once you have this.
 1. Open the `docker-compose.yml` file.
 2. Replace `cF_YOUR_LP_ACCOUNT` with your LP account.
 3. Replace `-1001234567890` with the telegram channel id.
-4. If needed, configure the `_Slice` settings to how you would like to balance your funds between USDT and arbUSDC. The total needs to be **100**!
+4. If needed, configure the `_Slice` settings to how you would like to balance your funds between USDT and arbUSDC. The total needs to be **100**! (In the example above, it is divided in 80/20)
 5. Save the file.
 6. Run `docker compose up -d` to start the bot.
 7. Run `docker compose logs -f -n 100` to follow the logs.
