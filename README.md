@@ -53,7 +53,7 @@ services:
       - --state_chain.ws_endpoint=wss://mainnet-rpc.chainflip.io:443
 
   cf-lp:
-    image: ghcr.io/cumpsd/chainflip-lp:v8.0.4
+    image: ghcr.io/cumpsd/chainflip-lp:v8.0.9
     pull_policy: always
     restart: unless-stopped
     working_dir: "/app"
