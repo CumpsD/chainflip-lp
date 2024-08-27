@@ -38,7 +38,7 @@ Linux users can also run `wget https://raw.githubusercontent.com/CumpsD/chainfli
 ```yml
 services:
   lp:
-    image: chainfliplabs/chainflip-lp-api:1.4
+    image: chainfliplabs/chainflip-lp-api:1.5
     pull_policy: always
     stop_grace_period: 5s
     stop_signal: SIGINT

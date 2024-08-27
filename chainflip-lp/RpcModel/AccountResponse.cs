@@ -65,21 +65,21 @@ namespace ChainflipLp.RpcModel
         public ArbitrumFeesBalance Arbitrum { get; set; }
         
         [JsonIgnore]
-        public Dictionary<string, Dictionary<string, ulong>> Fees
+        public Dictionary<string, Dictionary<string, string>> Fees
         {
             get
             {
-                var balances = new Dictionary<string, Dictionary<string, ulong>>
+                var balances = new Dictionary<string, Dictionary<string, string>>
                 {
                     {
-                        "Ethereum", new Dictionary<string, ulong>
+                        "Ethereum", new Dictionary<string, string>
                         {
                             { "USDC", Ethereum.UsdcBalance },
                             { "USDT", Ethereum.UsdtBalance },
                         }
                     },
                     {
-                        "Arbitrum", new Dictionary<string, ulong>
+                        "Arbitrum", new Dictionary<string, string>
                         {
                             { "USDC", Arbitrum.UsdcBalance },
                         }
@@ -103,10 +103,10 @@ namespace ChainflipLp.RpcModel
     public class EthereumFeesBalance
     {
         [JsonPropertyName("USDC")] 
-        public ulong UsdcBalance { get; set; }
+        public string UsdcBalance { get; set; }
         
         [JsonPropertyName("USDT")] 
-        public ulong UsdtBalance { get; set; }
+        public string UsdtBalance { get; set; }
     }
     
     public class ArbitrumBalance
@@ -118,6 +118,6 @@ namespace ChainflipLp.RpcModel
     public class ArbitrumFeesBalance
     {
         [JsonPropertyName("USDC")] 
-        public ulong UsdcBalance { get; set; }
+        public string UsdcBalance { get; set; }
     }
 }
