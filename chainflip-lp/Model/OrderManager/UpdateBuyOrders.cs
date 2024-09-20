@@ -27,8 +27,7 @@ namespace ChainflipLp.Model
                     "tick": REPLACE_BUY_TICK,
                     "amount_change": {
                         "increase": "0x0"
-                    },
-                    "wait_for: "InBlock"
+                    }
                 }
             }
             """;
@@ -87,7 +86,7 @@ namespace ChainflipLp.Model
             
             await NotifyTelegram(
                 telegramClient,
-                $"Updated {ourOrders.Asset}/{ourOrders.Chain} buy order from tick {ourOrder.Tick} to {newTick}",
+                $"Updated {ourOrders.Asset}/{ourOrders.Chain} buy order from tick {ourOrder.Tick} to {newTick} (${ourOrder.Amount.ToNumeric().ToString(Constants.DollarString)}/${ourOrder.OriginalAmount.ToNumeric().ToString(Constants.DollarString)})",
                 cancellationToken);
         }
         
