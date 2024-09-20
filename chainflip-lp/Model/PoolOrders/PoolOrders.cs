@@ -21,6 +21,11 @@ namespace ChainflipLp.Model
         public IEnumerable<Order> Buys => _poolOrders.Result.LimitOrders.Buys;
         
         public IEnumerable<Order> Sells => _poolOrders.Result.LimitOrders.Sells;
+
+        public long MinBuyTick => _pool.MinBuyTick.Value;
+        public long MaxBuyTick => _pool.MaxBuyTick.Value;
+        public long MinSellTick => _pool.MinSellTick.Value;
+        public long MaxSellTick => _pool.MaxSellTick.Value;
         
         private PoolOrders(
             ILogger logger,

@@ -13,7 +13,7 @@ namespace ChainflipLp.Model
 
     public partial class PoolOrders
     {
-        private const string PoolOrdersQuery =
+        private const string AllPoolOrdersQuery =
             """
             {
                 "jsonrpc": "2.0",
@@ -21,46 +21,41 @@ namespace ChainflipLp.Model
                 "method": "cf_pool_orders",
                 "params": {
                     "base_asset": { "chain": "REPLACE_CHAIN", "asset": "REPLACE_ASSET" },
-                    "quote_asset": { "chain": "Ethereum", "asset": "USDC" },
-                    "lp": "REPLACE_ACCOUNT"
+                    "quote_asset": { "chain": "Ethereum", "asset": "USDC" }
                 }
             }
             """;
         
-        public static async Task<PoolOrders> GetPoolOrders(
+        public static async Task<PoolOrders> GetAllPoolOrders(
             ILogger logger,
-            BotConfiguration configuration,
             PoolConfiguration pool, 
             HttpClient client,
             CancellationToken cancellationToken)
         {
-            var poolOrders = await GetPoolOrdersInternal(
+            var allPoolOrders = await GetAllPoolOrdersInternal(
                 logger,
-                configuration,
                 pool,
                 client,
                 cancellationToken);
             
-            if (poolOrders == null)
-                throw new NullReferenceException("Failed to fetch pool orders.");
+            if (allPoolOrders == null)
+                throw new NullReferenceException("Failed to fetch all pool orders.");
 
             return new PoolOrders(
                 logger,
                 pool,
-                poolOrders);
+                allPoolOrders);
         }
         
-        private static async Task<PoolOrdersResponse?> GetPoolOrdersInternal(
+        private static async Task<PoolOrdersResponse?> GetAllPoolOrdersInternal(
             ILogger logger,
-            BotConfiguration configuration,
             PoolConfiguration pool, 
             HttpClient client,
             CancellationToken cancellationToken)
         {
-            var query = PoolOrdersQuery
+            var query = AllPoolOrdersQuery
                 .Replace("REPLACE_CHAIN", pool.Chain)
-                .Replace("REPLACE_ASSET", pool.Asset)
-                .Replace("REPLACE_ACCOUNT", configuration.LpAccount);
+                .Replace("REPLACE_ASSET", pool.Asset);
 
             var response = await client.PostAsync(
                 string.Empty,
@@ -80,7 +75,7 @@ namespace ChainflipLp.Model
             }
 
             logger.LogError(
-                "GetPoolOrders returned {StatusCode}: {Error}\nRequest: {Request}",
+                "GetAllPoolOrdersInternal returned {StatusCode}: {Error}\nRequest: {Request}",
                 response.StatusCode,
                 await response.Content.ReadAsStringAsync(cancellationToken),
                 query);

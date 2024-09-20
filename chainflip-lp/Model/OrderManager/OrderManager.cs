@@ -43,7 +43,7 @@ namespace ChainflipLp.Model
                 client, 
                 telegramClient,
                 cancellationToken);
-
+            
             await PlaceBuyOrders(
                 balances, 
                 balance, 
@@ -51,7 +51,36 @@ namespace ChainflipLp.Model
                 telegramClient,
                 cancellationToken);
         }
-        
+
+        public async Task UpdateOrders(
+            List<PoolOrders> ourPoolOrders, 
+            List<PoolOrders> allPoolOrders, 
+            HttpClient client,
+            TelegramBotClient telegramClient, 
+            CancellationToken cancellationToken)
+        {
+            // Compare our orders to pool orders and make them competitive
+            _logger.LogInformation("Updating Orders");
+            _logger.LogInformation("--------------");
+
+            foreach (var pool in ourPoolOrders)
+            {
+                await UpdateSellOrders(
+                    pool, 
+                    allPoolOrders,
+                    client, 
+                    telegramClient,
+                    cancellationToken);
+                
+                await UpdateBuyOrders(
+                    pool, 
+                    allPoolOrders,
+                    client, 
+                    telegramClient,
+                    cancellationToken);
+            }
+        }
+
         private async Task NotifyTelegram(
             ITelegramBotClient telegramClient,
             string text,

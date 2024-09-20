@@ -87,7 +87,7 @@ namespace ChainflipLp.Model
                 .Replace("REPLACE_ASSET", pool.Asset)
                 .Replace("REPLACE_ID", GenerateAssetId(pool.Chain, pool.Asset, "sell"))
                 .Replace("REPLACE_AMOUNT", balance)
-                .Replace("REPLACE_SELL_TICK", pool.MaxSellTick.Value.ToString());
+                .Replace("REPLACE_SELL_TICK", pool.MinSellTick.Value.ToString());
 
             var response = await client.PostAsync(
                 string.Empty,

@@ -15,7 +15,8 @@ namespace ChainflipLp.Model
     {
         private readonly ILogger _logger;
         private readonly AccountResponse _account;
-        private readonly List<PoolOrders> _poolOrders;
+        private readonly List<PoolOrders> _ourPoolOrders;
+        private readonly List<PoolOrders> _allPoolOrders;
 
         private readonly OrderManager _orderManager;
         
@@ -26,11 +27,13 @@ namespace ChainflipLp.Model
             ILogger logger,
             BotConfiguration configuration,
             AccountResponse account, 
-            List<PoolOrders> poolOrders)
+            List<PoolOrders> ourPoolOrders,
+            List<PoolOrders> allPoolOrders)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _account = account ?? throw new ArgumentNullException(nameof(account));
-            _poolOrders = poolOrders ?? throw new ArgumentNullException(nameof(poolOrders));
+            _ourPoolOrders = ourPoolOrders ?? throw new ArgumentNullException(nameof(ourPoolOrders));
+            _allPoolOrders = allPoolOrders ?? throw new ArgumentNullException(nameof(allPoolOrders));
 
             _orderManager = new OrderManager(
                 logger,
@@ -38,11 +41,11 @@ namespace ChainflipLp.Model
             
             _assetBalances = CalculateAssetBalance(
                 account.Result.Balances,
-                poolOrders);
+                ourPoolOrders);
             
             _totalBalances = CalculateTotalBalances(
                 account.Result.Balances,
-                poolOrders);
+                ourPoolOrders);
         }
 
         public void DisplayAccountBalances()
@@ -80,7 +83,7 @@ namespace ChainflipLp.Model
 
         public void DisplayPoolOrders()
         {
-            foreach (var pool in _poolOrders)
+            foreach (var pool in _ourPoolOrders)
             {
                 pool.DisplayBuyOrders();
                 pool.DisplaySellOrders();
@@ -92,7 +95,7 @@ namespace ChainflipLp.Model
             CancellationToken ct) =>
             await _orderManager
                 .CleanupDustOrders(
-                    _poolOrders,
+                    _ourPoolOrders,
                     lpClient,
                     ct);
 
@@ -104,6 +107,18 @@ namespace ChainflipLp.Model
                 .PlaceOrders(
                     _assetBalances,
                     _account.Result.Balances,
+                    lpClient,
+                    telegramClient,
+                    ct);
+
+        public async Task UpdateOrders(
+            HttpClient lpClient,
+            TelegramBotClient telegramClient,
+            CancellationToken ct)=>
+            await _orderManager
+                .UpdateOrders(
+                    _ourPoolOrders,
+                    _allPoolOrders,
                     lpClient,
                     telegramClient,
                     ct);

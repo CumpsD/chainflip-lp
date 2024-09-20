@@ -58,6 +58,11 @@ namespace ChainflipLp
                     account.DisplayAccountBalances();
                     account.DisplayPoolOrders();
                     account.DisplayTotalBalances();
+                    
+                    await account.UpdateOrders(
+                        lpClient,
+                        _telegramClient,
+                        ct);
 
                     await account.CleanupDustOrders(
                         lpClient,
@@ -68,7 +73,6 @@ namespace ChainflipLp
                         _telegramClient,
                         ct);
                     
-                    // TODO: Update orders to make them more competitive
                     // TODO: Future plans, listen for incoming swaps and JIT it
 
                     await WaitForNextLoop(ct);
