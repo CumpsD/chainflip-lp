@@ -58,6 +58,12 @@ namespace ChainflipLp.Model
 
             var newTick = otherTick - 1;
 
+            if (newTick < ourOrders.MinSellTick)
+                newTick = ourOrders.MinSellTick;
+
+            if (newTick == ourTick)
+                return;
+            
             // Update it to otherTick - 1
             _logger.LogInformation(
                 "[{Id}] {Asset}/{Chain} ${Amount}/${OriginalAmount} @ tick {OldTick} updating tick {NewTick}",
