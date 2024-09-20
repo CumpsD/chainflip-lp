@@ -6,6 +6,7 @@ namespace ChainflipLp.Model
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Net.Mime;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using ChainflipLp.Configuration;
@@ -13,6 +14,7 @@ namespace ChainflipLp.Model
     using ChainflipLp.RpcModel;
     using Microsoft.Extensions.Logging;
     using Telegram.Bot;
+    using xxHashSharp;
 
     public partial class OrderManager
     {
@@ -21,7 +23,7 @@ namespace ChainflipLp.Model
             {
                 "jsonrpc": "2.0",
                 "id": 1,
-                "method": "lp_set_limit_order",
+                "method": "lp_update_limit_order",
                 "params": {
                     "base_asset": { "chain": "REPLACE_CHAIN", "asset": "REPLACE_ASSET" },
                     "quote_asset": { "chain": "Ethereum", "asset": "USDC" },
@@ -110,7 +112,7 @@ namespace ChainflipLp.Model
             var query = BuyOrderQuery
                 .Replace("REPLACE_CHAIN", pool.Chain)
                 .Replace("REPLACE_ASSET", pool.Asset)
-                .Replace("REPLACE_ID", GenerateRandomId())
+                .Replace("REPLACE_ID", GenerateAssetId(pool.Chain, pool.Asset, "buy"))
                 .Replace("REPLACE_AMOUNT", balance)
                 .Replace("REPLACE_BUY_TICK", pool.MaxBuyTick.Value.ToString());
 
@@ -139,7 +141,11 @@ namespace ChainflipLp.Model
                 query);
         }
         
-        private static string GenerateRandomId()
-            => Random.Shared.NextInt64().ToString("X");
+        private static string GenerateAssetId(string chain, string asset, string side)
+        { 
+            var id = $"{asset.ToLower()}-{chain.ToLower()}-{side.ToLower()}";
+            var hashValue = xxHash.CalculateHash(Encoding.UTF8.GetBytes(id));
+            return hashValue.ToString("x8");
+        }
     }
 }

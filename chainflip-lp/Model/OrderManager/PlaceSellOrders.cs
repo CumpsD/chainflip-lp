@@ -18,7 +18,7 @@ namespace ChainflipLp.Model
             {
                 "jsonrpc": "2.0",
                 "id": 1,
-                "method": "lp_set_limit_order",
+                "method": "lp_update_limit_order",
                 "params": {
                     "base_asset": { "chain": "REPLACE_CHAIN", "asset": "REPLACE_ASSET" },
                     "quote_asset": { "chain": "Ethereum", "asset": "USDC" },
@@ -83,7 +83,7 @@ namespace ChainflipLp.Model
             var query = SellOrderQuery
                 .Replace("REPLACE_CHAIN", pool.Chain)
                 .Replace("REPLACE_ASSET", pool.Asset)
-                .Replace("REPLACE_ID", GenerateRandomId())
+                .Replace("REPLACE_ID", GenerateAssetId(pool.Chain, pool.Asset, "sell"))
                 .Replace("REPLACE_AMOUNT", balance)
                 .Replace("REPLACE_SELL_TICK", pool.MaxSellTick.Value.ToString());
 
