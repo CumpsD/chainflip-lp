@@ -25,7 +25,7 @@ namespace ChainflipLp.Model
                     "side": "sell",
                     "id": "REPLACE_ID",
                     "tick": REPLACE_SELL_TICK,
-                    "sell_amount": "REPLACE_AMOUNT"
+                    "amount_change": "REPLACE_AMOUNT"
                 }
             }
             """;
