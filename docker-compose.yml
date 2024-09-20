@@ -15,7 +15,7 @@ services:
       - --state_chain.ws_endpoint=wss://mainnet-rpc.chainflip.io:443
 
   cf-lp:
-    image: ghcr.io/cumpsd/chainflip-lp:v8.0.9
+    image: ghcr.io/cumpsd/chainflip-lp:v8.0.19
     pull_policy: always
     restart: unless-stopped
     working_dir: "/app"
@@ -32,16 +32,16 @@ services:
       - Bot__Pools__0__Chain=Ethereum
       - Bot__Pools__0__Asset=USDT
       - Bot__Pools__0__Slice=80
-      - Bot__Pools__0__MinBuyTick=0
+      - Bot__Pools__0__MinBuyTick=-50
       - Bot__Pools__0__MaxBuyTick=1
-      - Bot__Pools__0__MinSellTick=0
+      - Bot__Pools__0__MinSellTick=50
       - Bot__Pools__0__MaxSellTick=-1
       - Bot__Pools__1__Chain=Arbitrum
       - Bot__Pools__1__Asset=USDC
       - Bot__Pools__1__Slice=20
-      - Bot__Pools__1__MinBuyTick=0
+      - Bot__Pools__1__MinBuyTick=-50
       - Bot__Pools__1__MaxBuyTick=1
-      - Bot__Pools__1__MinSellTick=0
+      - Bot__Pools__1__MinSellTick=50
       - Bot__Pools__1__MaxSellTick=-1
       - Serilog__MinimumLevel__Override__ChainflipLp=Information
     depends_on:
