@@ -55,10 +55,6 @@ namespace ChainflipLp.Model
             var ourTick = ourOrder.Tick;
             var otherTick = otherOrders.Min(x => x.Tick);
 
-            // Can't make it any better
-            if (ourTick == ourOrders.MaxSellTick)
-                return;
-
             var newTick = otherTick - 1;
 
             if (newTick < ourOrders.MaxSellTick)
