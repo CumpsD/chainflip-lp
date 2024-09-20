@@ -67,7 +67,6 @@ namespace ChainflipLp.Model
             if (newTick > ourOrders.MinSellTick)
                 newTick = ourOrders.MinSellTick;
 
-
             if (newTick == ourTick)
                 return;
             
