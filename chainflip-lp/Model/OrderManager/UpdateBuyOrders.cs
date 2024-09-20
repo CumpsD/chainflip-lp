@@ -45,7 +45,10 @@ namespace ChainflipLp.Model
                 .Where(x => x.LiquidityProvider != _configuration.LpAccount)
                 .ToList();
 
-            var ourOrder = ourOrders.Buys.Single();
+            var ourOrder = ourOrders.Buys.SingleOrDefault();
+            if (ourOrder == null)
+                return;
+            
             var ourTick = ourOrder.Tick;
             var otherTick = otherOrders.Max(x => x.Tick);
 
