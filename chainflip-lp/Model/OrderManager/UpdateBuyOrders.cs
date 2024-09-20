@@ -24,7 +24,10 @@ namespace ChainflipLp.Model
                     "quote_asset": { "chain": "Ethereum", "asset": "USDC" },
                     "side": "buy",
                     "id": "REPLACE_ID",
-                    "tick": REPLACE_BUY_TICK
+                    "tick": REPLACE_BUY_TICK,
+                    "amount_change": {
+                        "increase": "0x0"
+                    }
                 }
             }
             """;
@@ -57,7 +60,7 @@ namespace ChainflipLp.Model
                 return;
 
             var newTick = otherTick + 1;
-            if (newTick > ourOrders.MinBuyTick)
+            if (newTick < ourOrders.MinBuyTick)
                 newTick = ourOrders.MinBuyTick;
 
             if (newTick == ourTick)
@@ -65,7 +68,7 @@ namespace ChainflipLp.Model
             
             // Update it to otherTick + 1
             _logger.LogInformation(
-                "[{Id}] {Asset}/{Chain} ${Amount}/${OriginalAmount} @ tick {OldTick} updating tick {NewTick}",
+                "[{Id}] {Asset}/{Chain} ${Amount}/${OriginalAmount} @ tick {OldTick} updating buy tick {NewTick}",
                 ourOrder.Id,
                 ourOrders.Asset,
                 ourOrders.Chain,
@@ -94,7 +97,7 @@ namespace ChainflipLp.Model
             HttpClient client,
             CancellationToken cancellationToken)
         {
-            var query = BuyOrderQuery
+            var query = UpdateBuyOrderQuery
                 .Replace("REPLACE_CHAIN", chain)
                 .Replace("REPLACE_ASSET", asset)
                 .Replace("REPLACE_ID", GenerateAssetId(chain, asset, "buy"))
