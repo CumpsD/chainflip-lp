@@ -27,7 +27,8 @@ namespace ChainflipLp.Model
                     "tick": REPLACE_BUY_TICK,
                     "amount_change": {
                         "increase": "0x0"
-                    }
+                    },
+                    "wait_for: "InBlock"
                 }
             }
             """;
