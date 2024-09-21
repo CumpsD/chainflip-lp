@@ -84,6 +84,7 @@ namespace ChainflipLp.Model
         private async Task NotifyTelegram(
             ITelegramBotClient telegramClient,
             string text,
+            bool useEmoji,
             CancellationToken ct)
         {
             try
@@ -110,6 +111,9 @@ namespace ChainflipLp.Model
                 _logger.LogInformation(
                     "Telegram message {MessageId} sent.",
                     message.MessageId);
+
+                if (!useEmoji)
+                    return;
                 
                 await telegramClient
                     .SetMessageReactionAsync(

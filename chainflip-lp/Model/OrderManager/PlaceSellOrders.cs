@@ -62,6 +62,7 @@ namespace ChainflipLp.Model
                     await NotifyTelegram(
                         telegramClient,
                         $"Placed {pool.Asset}/{pool.Chain} sell order for {poolBalance.ToNumeric().ToString(Constants.DollarString)} {pool.Asset}/{pool.Chain}",
+                        true,
                         cancellationToken);
                 }
                 else
