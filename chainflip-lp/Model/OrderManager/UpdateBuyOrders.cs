@@ -53,6 +53,10 @@ namespace ChainflipLp.Model
                 return;
             
             var ourTick = ourOrder.Tick;
+
+            if (otherOrders.Count == 0)
+                return;
+            
             var otherTick = otherOrders.Max(x => x.Tick);
 
             var newTick = otherTick + 1;
