@@ -29,6 +29,9 @@ namespace ChainflipLp.RpcModel
         [JsonPropertyName("Arbitrum")] 
         public ArbitrumBalance Arbitrum { get; set; }
         
+        [JsonPropertyName("Solana")] 
+        public SolanaBalance Solana { get; set; }
+        
         [JsonIgnore]
         public Dictionary<string, Dictionary<string, string>> Balances
         {
@@ -48,6 +51,12 @@ namespace ChainflipLp.RpcModel
                         {
                             { "USDC", Arbitrum.UsdcBalance },
                         }
+                    },
+                    {
+                        "Solana", new Dictionary<string, string>
+                        {
+                            { "USDC", Solana.UsdcBalance },
+                        }
                     }
                 };
 
@@ -63,6 +72,9 @@ namespace ChainflipLp.RpcModel
         
         [JsonPropertyName("Arbitrum")] 
         public ArbitrumFeesBalance Arbitrum { get; set; }
+        
+        [JsonPropertyName("Solana")] 
+        public SolanaFeesBalance Solana { get; set; }
         
         [JsonIgnore]
         public Dictionary<string, Dictionary<string, string>> Fees
@@ -82,6 +94,12 @@ namespace ChainflipLp.RpcModel
                         "Arbitrum", new Dictionary<string, string>
                         {
                             { "USDC", Arbitrum.UsdcBalance },
+                        }
+                    },
+                    {
+                        "Solana", new Dictionary<string, string>
+                        {
+                            { "USDC", Solana.UsdcBalance },
                         }
                     }
                 };
@@ -116,6 +134,18 @@ namespace ChainflipLp.RpcModel
     }
     
     public class ArbitrumFeesBalance
+    {
+        [JsonPropertyName("USDC")] 
+        public string UsdcBalance { get; set; }
+    }
+    
+    public class SolanaBalance
+    {
+        [JsonPropertyName("USDC")] 
+        public string UsdcBalance { get; set; }
+    }
+    
+    public class SolanaFeesBalance
     {
         [JsonPropertyName("USDC")] 
         public string UsdcBalance { get; set; }
