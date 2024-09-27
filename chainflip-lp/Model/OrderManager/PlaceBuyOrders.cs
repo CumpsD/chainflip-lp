@@ -86,6 +86,9 @@ namespace ChainflipLp.Model
                     if (remainingBalance <= 0)
                         continue;
 
+                    if (pool.Difference <= 0)
+                        continue;
+                    
                     if (pool.Difference < remainingBalance)
                     {
                         // Fill up the pool, subtract from remainingBalance and carry on
@@ -129,6 +132,8 @@ namespace ChainflipLp.Model
                             $"Placed {pool.Pool.Asset}/{pool.Pool.Chain} buy order for {remainingBalance.ToString(Constants.DollarString)} USDC",
                             true,
                             cancellationToken);
+
+                        remainingBalance = 0;
                     }
                 }
             }
