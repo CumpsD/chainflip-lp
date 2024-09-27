@@ -19,6 +19,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Fix Docker Hub
+        run: docker logout
+        
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v3.6.1
