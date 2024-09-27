@@ -51,10 +51,9 @@ namespace ChainflipLp.Model
             {
                 // We have USDC, figure out where to place a buy order
                 // Check each pool their slice compared to the total balance
-                // Grab the pool with the biggest difference and throw the balance in there
+                // Fill up the pools where possible until the USDC runs out
 
-                var poolToUse = _configuration.Pools[0];
-                var maxPoolDifference = 0d;
+                var poolDifferences = new Dictionary<PoolConfiguration, double>();
                 foreach (var pool in _configuration.Pools)
                 {
                     var expectedPoolSlice = totalBalance / 100 * pool.Slice.Value;
@@ -69,30 +68,69 @@ namespace ChainflipLp.Model
                         currentPoolSlice.ToString(Constants.DollarString),
                         poolDifference.ToString(Constants.DollarString));
 
-                    if (poolDifference <= maxPoolDifference) 
-                        continue;
-                    
-                    maxPoolDifference = poolDifference;
-                    poolToUse = pool;
+                    poolDifferences.Add(pool, poolDifference);
                 }
-                
-                _logger.LogWarning(
-                    "Placing {Asset}/{Chain} buy order for ${Balance} USDC",
-                    poolToUse.Asset,
-                    poolToUse.Chain,
-                    usdcBalance.ToNumeric().ToString(Constants.DollarString));
 
-                await PlaceBuyOrder(
-                    poolToUse,
-                    usdcBalance,
-                    client,
-                    cancellationToken);
+                var poolOrder = poolDifferences
+                    .OrderByDescending(x => x.Value)
+                    .Select(x => new
+                    {
+                        Pool = x.Key,
+                        Difference = x.Value
+                    })
+                    .ToList();
 
-                await NotifyTelegram(
-                    telegramClient,
-                    $"Placed {poolToUse.Asset}/{poolToUse.Chain} buy order for {usdcBalance.ToNumeric().ToString(Constants.DollarString)} USDC",
-                    true,
-                    cancellationToken);
+                var remainingBalance = usdcBalance.ToNumeric();
+                foreach (var pool in poolOrder)
+                {
+                    if (remainingBalance <= 0)
+                        continue;
+
+                    if (pool.Difference < remainingBalance)
+                    {
+                        // Fill up the pool, subtract from remainingBalance and carry on
+                        _logger.LogWarning(
+                            "Placing {Asset}/{Chain} buy order for ${Balance} USDC",
+                            pool.Pool.Asset,
+                            pool.Pool.Chain,
+                            pool.Difference.ToString(Constants.DollarString));
+
+                        await PlaceBuyOrder(
+                            pool.Pool,
+                            pool.Difference.ToHexNumeric(),
+                            client,
+                            cancellationToken);
+
+                        await NotifyTelegram(
+                            telegramClient,
+                            $"Placed {pool.Pool.Asset}/{pool.Pool.Chain} buy order for {pool.Difference.ToString(Constants.DollarString)} USDC",
+                            true,
+                            cancellationToken);
+                        
+                        remainingBalance -= pool.Difference;
+                    }
+                    else
+                    {
+                        // Dump the rest of the balance in this pool
+                        _logger.LogWarning(
+                            "Placing {Asset}/{Chain} buy order for ${Balance} USDC",
+                            pool.Pool.Asset,
+                            pool.Pool.Chain,
+                            remainingBalance.ToString(Constants.DollarString));
+                        
+                        await PlaceBuyOrder(
+                            pool.Pool,
+                            remainingBalance.ToHexNumeric(),
+                            client,
+                            cancellationToken);
+
+                        await NotifyTelegram(
+                            telegramClient,
+                            $"Placed {pool.Pool.Asset}/{pool.Pool.Chain} buy order for {remainingBalance.ToString(Constants.DollarString)} USDC",
+                            true,
+                            cancellationToken);
+                    }
+                }
             }
             else
             {
