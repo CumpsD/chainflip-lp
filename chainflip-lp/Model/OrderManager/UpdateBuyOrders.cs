@@ -61,8 +61,8 @@ namespace ChainflipLp.Model
 
             var newTick = otherTick + 1;
             
-            if (newTick > ourOrders.MaxSellTick)
-                newTick = ourOrders.MaxSellTick;
+            if (newTick > ourOrders.MaxBuyTick)
+                newTick = ourOrders.MaxBuyTick;
             
             if (newTick < ourOrders.MinBuyTick)
                 newTick = ourOrders.MinBuyTick;
