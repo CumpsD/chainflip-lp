@@ -87,12 +87,15 @@ namespace ChainflipLp.Model
                 newTick,
                 client,
                 cancellationToken);
-            
-            await NotifyTelegram(
-                telegramClient,
-                $"Updated {ourOrders.Asset}/{ourOrders.Chain} buy order from tick {ourOrder.Tick} to {newTick} (${ourOrder.Amount.ToNumeric().ToString(Constants.DollarString)}/${ourOrder.OriginalAmount.ToNumeric().ToString(Constants.DollarString)})",
-                false,
-                cancellationToken);
+
+            if (_configuration.AnnounceTickChanges.Value)
+            {
+                await NotifyTelegram(
+                    telegramClient,
+                    $"Updated {ourOrders.Asset}/{ourOrders.Chain} buy order from tick {ourOrder.Tick} to {newTick} (${ourOrder.Amount.ToNumeric().ToString(Constants.DollarString)}/${ourOrder.OriginalAmount.ToNumeric().ToString(Constants.DollarString)})",
+                    false,
+                    cancellationToken);
+            }
         }
         
         private async Task UpdateBuyOrder(

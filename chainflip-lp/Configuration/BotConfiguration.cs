@@ -70,6 +70,13 @@ namespace ChainflipLp.Configuration
         {
             get; init;
         }
+
+        [Required]
+        [NotNull]
+        public bool? AnnounceTickChanges
+        {
+            get; init;
+        }
         
         [Required]
         [NotNull]
