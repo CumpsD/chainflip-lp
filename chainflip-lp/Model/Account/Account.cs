@@ -70,15 +70,23 @@ namespace ChainflipLp.Model
             _logger.LogInformation("Total Balance");
             _logger.LogInformation("-------------");
 
+            double totalBalance = 0;
             foreach (var chain in _totalBalances)
             foreach (var asset in chain.Value)
             {
+                totalBalance += asset.Value;
+                
                 _logger.LogInformation(
                     "{Asset}/{Chain}: ${Balance}",
                     asset.Key,
                     chain.Key,
                     asset.Value.ToString(Constants.DollarString));
             }
+            
+            _logger.LogInformation("-------------");
+            _logger.LogInformation(
+                "Total: ${Balance}",
+                totalBalance.ToString(Constants.DollarString));
         }
 
         public void DisplayPoolOrders()
