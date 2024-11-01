@@ -46,6 +46,7 @@ namespace ChainflipLp.Model
                     x.Asset == ourOrders.Asset)
                 .SelectMany(x => x.Buys)
                 .Where(x => x.LiquidityProvider != _configuration.LpAccount)
+                .Where(x => x.Tick <= ourOrders.MaxBuyTick)
                 .ToList();
 
             var ourOrder = ourOrders.Buys.SingleOrDefault();
