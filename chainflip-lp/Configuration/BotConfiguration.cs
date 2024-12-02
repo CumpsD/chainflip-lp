@@ -80,6 +80,13 @@ namespace ChainflipLp.Configuration
         
         [Required]
         [NotNull]
+        public int? AmountIgnoreLimit
+        {
+            get; init;
+        }
+        
+        [Required]
+        [NotNull]
         public PoolConfiguration[]? Pools 
         {
             get; init;
