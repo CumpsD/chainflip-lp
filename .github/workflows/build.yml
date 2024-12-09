@@ -43,7 +43,7 @@ jobs:
           echo "Platforms: ${{ steps.buildx.outputs.platforms }}"
 
       - name: Build and push
-        uses: docker/build-push-action@v6.9.0
+        uses: docker/build-push-action@v6.10.0
         with:
           context: .
           file: Dockerfile
