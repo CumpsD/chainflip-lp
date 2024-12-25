@@ -24,7 +24,8 @@ namespace ChainflipLp.Model
                     "quote_asset": { "chain": "Ethereum", "asset": "USDC" },
                     "side": "REPLACE_SIDE",
                     "id": "REPLACE_ID",
-                    "sell_amount": "0"
+                    "sell_amount": "0",
+                    "wait_for": "REPLACE_WAIT_FOR"
                 }
             }
             """;
@@ -82,7 +83,8 @@ namespace ChainflipLp.Model
                 .Replace("REPLACE_CHAIN", chain)
                 .Replace("REPLACE_ASSET", asset)
                 .Replace("REPLACE_ID", order.Id)
-                .Replace("REPLACE_SIDE", side);
+                .Replace("REPLACE_SIDE", side)
+                .Replace("REPLACE_WAIT_FOR", _configuration.NoWaitMode.Value ? "NoWait" : "Finalized");
 
             var response = await client.PostAsync(
                 string.Empty,

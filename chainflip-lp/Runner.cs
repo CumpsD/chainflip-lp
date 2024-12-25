@@ -96,6 +96,10 @@ namespace ChainflipLp
         private async Task WaitForNextLoop(CancellationToken ct)
         {
             var delay = _configuration.QueryDelay.Value.RandomizeTime();
+
+            if (_configuration.NoWaitMode.Value)
+                delay = 4000;
+                    
             _logger.LogInformation("Waiting {QueryDelay}ms for next check.", delay);
             await Task.Delay(delay, ct);
         }

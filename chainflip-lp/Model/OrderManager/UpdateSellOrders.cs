@@ -27,7 +27,8 @@ namespace ChainflipLp.Model
                     "tick": REPLACE_SELL_TICK,
                     "amount_change": {
                         "increase": "0x0"
-                    }
+                    },
+                    "wait_for": "REPLACE_WAIT_FOR"
                 }
             }
             """;
@@ -40,13 +41,16 @@ namespace ChainflipLp.Model
             ITelegramBotClient telegramClient,
             CancellationToken cancellationToken)
         {
+            var amountIgnoreLimit = ourOrders.AmountIgnoreLimit ?? _configuration.AmountIgnoreLimit ?? 0;
+            
             var otherOrders = allPoolOrders
                 .Where(x =>
                     x.Chain == ourOrders.Chain &&
                     x.Asset == ourOrders.Asset)
                 .SelectMany(x => x.Sells)
-                .Where(x => x.Amount.ToNumeric() > _configuration.AmountIgnoreLimit.Value)
+                .Where(x => x.Amount.ToNumeric() > amountIgnoreLimit)
                 .Where(x => x.LiquidityProvider != _configuration.LpAccount)
+                .Where(x => !_configuration.Whitelist.Contains(x.LiquidityProvider))
                 .Where(x => x.Tick >= ourOrders.MaxSellTick)
                 .ToList();
 
@@ -111,7 +115,8 @@ namespace ChainflipLp.Model
                 .Replace("REPLACE_CHAIN", chain)
                 .Replace("REPLACE_ASSET", asset)
                 .Replace("REPLACE_ID", GenerateAssetId(chain, asset, "sell"))
-                .Replace("REPLACE_SELL_TICK", newTick.ToString());
+                .Replace("REPLACE_SELL_TICK", newTick.ToString())
+                .Replace("REPLACE_WAIT_FOR", _configuration.NoWaitMode.Value ? "NoWait" : "Finalized");
 
             var response = await client.PostAsync(
                 string.Empty,

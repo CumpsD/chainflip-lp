@@ -1,5 +1,6 @@
 namespace ChainflipLp.Configuration
 {
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics.CodeAnalysis;
     
@@ -78,9 +79,21 @@ namespace ChainflipLp.Configuration
             get; init;
         }
         
+        public int? AmountIgnoreLimit
+        {
+            get; init;
+        }
+
         [Required]
         [NotNull]
-        public int? AmountIgnoreLimit
+        public List<string>? Whitelist
+        {
+            get; init;
+        }
+        
+        [Required]
+        [NotNull]
+        public bool? NoWaitMode
         {
             get; init;
         }
@@ -140,6 +153,11 @@ namespace ChainflipLp.Configuration
         [Required]
         [NotNull]
         public int? MaxSellTick
+        {
+            get; init;
+        }
+        
+        public int? AmountIgnoreLimit
         {
             get; init;
         }

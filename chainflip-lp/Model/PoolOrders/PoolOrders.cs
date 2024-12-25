@@ -17,6 +17,7 @@ namespace ChainflipLp.Model
 
         public string Chain => _pool.Chain;
         public string Asset => _pool.Asset;
+        public int? AmountIgnoreLimit => _pool.AmountIgnoreLimit;
         
         public IEnumerable<Order> Buys => _poolOrders.Result.LimitOrders.Buys;
         

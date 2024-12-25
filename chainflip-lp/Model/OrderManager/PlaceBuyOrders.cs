@@ -31,7 +31,8 @@ namespace ChainflipLp.Model
                     "tick": REPLACE_BUY_TICK,
                     "amount_change": {
                         "increase": "REPLACE_AMOUNT"
-                    }
+                    },
+                    "wait_for": "REPLACE_WAIT_FOR"
                 }
             }
             """;
@@ -159,7 +160,8 @@ namespace ChainflipLp.Model
                 .Replace("REPLACE_ASSET", pool.Asset)
                 .Replace("REPLACE_ID", GenerateAssetId(pool.Chain, pool.Asset, "buy"))
                 .Replace("REPLACE_AMOUNT", balance)
-                .Replace("REPLACE_BUY_TICK", pool.MinBuyTick.Value.ToString());
+                .Replace("REPLACE_BUY_TICK", pool.MinBuyTick.Value.ToString())
+                .Replace("REPLACE_WAIT_FOR", _configuration.NoWaitMode.Value ? "NoWait" : "Finalized");
 
             var response = await client.PostAsync(
                 string.Empty,

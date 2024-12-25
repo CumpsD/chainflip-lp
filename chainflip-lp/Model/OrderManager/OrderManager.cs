@@ -90,7 +90,7 @@ namespace ChainflipLp.Model
             try
             {
                 var message = await telegramClient
-                    .SendMessageAsync(
+                    .SendRequest(
                         new SendMessageRequest
                         {
                             ChatId = new ChatId(_configuration.TelegramChannelId.Value),
@@ -116,7 +116,7 @@ namespace ChainflipLp.Model
                     return;
                 
                 await telegramClient
-                    .SetMessageReactionAsync(
+                    .SendRequest(
                         new SetMessageReactionRequest
                         {
                             ChatId = new ChatId(_configuration.TelegramChannelId.Value),
