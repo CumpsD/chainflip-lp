@@ -5,6 +5,7 @@ namespace ChainflipLp.Model
     using System.Net.Http.Headers;
     using System.Net.Http.Json;
     using System.Net.Mime;
+    using System.Text.Json;
     using System.Threading;
     using System.Threading.Tasks;
     using ChainflipLp.Configuration;
@@ -71,12 +72,15 @@ namespace ChainflipLp.Model
 
             if (response.IsSuccessStatusCode)
             {
-                // var content = await response.Content.ReadAsStringAsync(cancellationToken);
-                // return JsonSerializer.Deserialize<PoolOrdersResponse>(content);
-
-                return await response
-                    .Content
-                    .ReadFromJsonAsync<PoolOrdersResponse>(cancellationToken: cancellationToken);
+                var content = await response.Content.ReadAsStringAsync(cancellationToken);
+                
+                logger.LogDebug(
+                    "GetOurPoolOrdersInternal returned {StatusCode}: {Content}\nRequest: {Request}",
+                    response.StatusCode,
+                    content,
+                    query);
+                
+                return JsonSerializer.Deserialize<PoolOrdersResponse>(content);
             }
 
             logger.LogError(
