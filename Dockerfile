@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:9.0.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:9.0.1 AS base
 USER $APP_UID
 WORKDIR /app
 
